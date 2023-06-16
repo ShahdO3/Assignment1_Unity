@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MovementPlayer : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class MovementPlayer : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
 
     //          =========== ROTATING WITH CAM ==============
@@ -44,8 +45,11 @@ public class MovementPlayer : MonoBehaviour
 
         if (controller.isGrounded)
             velocity.y = 0f;
-        else
-        velocity.y += gravity * Time.deltaTime;
+        
+            velocity.y += gravity * Time.deltaTime;
+        
+        if (transform.position.y < 0) // if they fall we should reload the scene
+            SceneManager.LoadScene(0);
 
         if (Input.GetButtonDown("Jump"))
             velocity.y = jumpHeight;
